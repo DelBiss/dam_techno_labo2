@@ -1,68 +1,43 @@
 <template>
-  <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-title>Blank</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Blank</ion-title>
-        </ion-toolbar>
-      </ion-header>
-    
-      <div id="container">
-        <strong>Ready to create an app?</strong>
-        <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-      </div>
-    </ion-content>
-  </ion-page>
+  <nav-tool-bar title="Recipe of the moment" :action="true">
+    <template v-slot:action>
+      <ion-button @click="refreshData()" >
+        <ion-icon :icon="refresh"></ion-icon>
+      </ion-button>
+    </template>
+    <ion-toolbar color="secondary">
+      <ion-title>{{meal?.title}}</ion-title>
+    </ion-toolbar>
+    <recipe-meal v-if="meal" :meal="meal" ></recipe-meal>
+  </nav-tool-bar>
 </template>
 
-<script lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { IonIcon, IonButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { inject, ref, Ref } from 'vue';
+import {MealsServiceKey} from "@/injection"
+import RecipeMeal from '@/components/recipes/RecipeMeal.vue';
+import { Meal } from '@/models/mealsdb/types';
+import NavToolBar from '@/components/menu/NavToolBar.vue';
+import { refresh } from 'ionicons/icons';
 
-export default defineComponent({
-  name: 'HomePage',
-  components: {
-    IonContent,
-    IonHeader,
-    IonPage,
-    IonTitle,
-    IonToolbar
-  }
-});
+const mealsService = inject(MealsServiceKey)
+
+const meal:Ref<Meal|null> = ref(null);
+
+
+function refreshData() {
+  console.log('refreshDate');
+  mealsService?.randomMeal().then(
+  (_meal:Meal) => {
+    meal.value = _meal;
+  }  
+)
+}
+  
+
+refreshData();
+
+
 </script>
 
-<style scoped>
-#container {
-  text-align: center;
-  
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  
-  color: #8c8c8c;
-  
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
-}
-</style>
