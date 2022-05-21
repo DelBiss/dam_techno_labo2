@@ -5,12 +5,12 @@
     "homepage": "https://delbiss.github.io/dam_techno_labo2",
     "scripts": {
         "serve": "vue-cli-service serve",
-        "build": "vue-cli-service build --dest docs",
+        "build": "vue-cli-service build",
         "test:unit": "vue-cli-service test:unit",
         "test:e2e": "vue-cli-service test:e2e",
         "lint": "vue-cli-service lint",
         "predeploy": "npm run build",
-        "deploy": "gh-pages -d build"
+        "deploy": "gh-pages -d dist"
     },
     "dependencies": {
         "@capacitor/app": "1.1.1",
