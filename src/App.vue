@@ -9,48 +9,60 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, Ref } from 'vue';
-import { 
-  IonApp,
-  IonRouterOutlet,
-  IonSplitPane
-  } from '@ionic/vue';
-import NavMenu from './components/menu/NavMenu.vue';
-import { MenuItem } from './components/menu/NavMenuItem.vue';
-import { MealsServiceKey } from "@/injection"
-import { Category } from './models/mealsdb/types';
-import { home } from 'ionicons/icons';
-const mealsService = inject(MealsServiceKey)
+  // Ionic imports
+  import { 
+    IonApp,
+    IonRouterOutlet,
+    IonSplitPane
+    } from '@ionic/vue';
 
-const menuItem: Ref<MenuItem[] | undefined> = ref(undefined);
+  // Service Injections imports
+  import { inject, ref, Ref } from 'vue';
+  import { MealsServiceKey } from "@/injection"
 
-menuItem.value = [{
-  name: 'Home',
-  url: '/',
-  icon: home
-}]
+  
+  // Menu Component imports
+  import NavMenu from './components/menu/NavMenu.vue';
+  import { MenuItem } from './components/menu/NavMenuItem.vue';
+  import { Category } from './models/mealsdb/types';
+  import { home } from 'ionicons/icons';
 
-mealsService?.getCategories().then(
-  (categories:Category[]):MenuItem => {
-    return {
-      name: 'Categories',
-      children: categories.map(
-      (category:Category):MenuItem => {
-        return {
-          name: category.name,
-          url: `/category/${category.name}`,
-          avatar: category.thumbnail,
-          direction: 'forward'
-        }
-      }
-    )
-  }}
-).then(
-  (menuItems:MenuItem):void => {
-    menuItem.value = menuItem.value?.concat(menuItems);
-  }
-)
-   
+
+  // Service Injections
+  const mealsService = inject(MealsServiceKey)
+
+  // Populate the menu items
+  const menuItem: Ref<MenuItem[] | undefined> = ref(undefined);
+  menuItem.value = [{
+    name: 'Home',
+    url: '/',
+    icon: home
+  }]
+
+  // Ask the service for the categories
+  mealsService?.getCategories().then(
+    // Format the categories into menu items under the categories section
+    (categories:Category[]):MenuItem => {
+      return {
+        name: 'Categories',
+        children: categories.map(
+          (category:Category):MenuItem => {
+            return {
+              name: category.name,
+              url: `/category/${category.name}`,
+              avatar: category.thumbnail,
+              direction: 'forward'
+            }
+          }
+      )
+    }}
+  ).then(
+    // Update the menu state
+    (menuItems:MenuItem):void => {
+      menuItem.value = menuItem.value?.concat(menuItems);
+    }
+  )
+    
 
 
 </script>

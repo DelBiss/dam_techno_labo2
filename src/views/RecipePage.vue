@@ -1,3 +1,8 @@
+<!-- 
+  Similar to the home page, but for showing a specific meal.
+  In this situation, the view title is the name of the meal.
+-->
+
 <template>
   
       <nav-tool-bar :title="meal? meal.title : 'Recipe'">
@@ -14,8 +19,8 @@ import { inject, ref, Ref } from 'vue';
 import {MealsServiceKey} from "@/injection"
 import RecipeMeal from '@/components/recipes/RecipeMeal.vue';
 import { Meal } from '@/models/mealsdb/types';
-import { menu } from 'ionicons/icons';
 import NavToolBar from '@/components/menu/NavToolBar.vue';
+
 const mealsService = inject(MealsServiceKey)
 
 const meal:Ref<Meal|null> = ref(null);

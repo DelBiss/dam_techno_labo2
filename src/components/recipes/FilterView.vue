@@ -24,6 +24,11 @@ const props = defineProps<{
 </script>
 
 <template>
+    <!---
+        All recipes for the filter are shown in a list.
+        We navigate foward to be able to come back.
+        This component can be used for any filter available in the api like the area and main ingredient.
+    -->
     <ion-content :fullscreen="true">
     <ion-list>
             <ion-item v-for="item in filters" button :router-link="`/recipe/${item.id}`" router-direction="forward">

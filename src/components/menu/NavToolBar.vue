@@ -9,7 +9,7 @@ import {
     IonButtons, 
     IonBackButton, 
     IonContent, 
-useIonRouter
+    useIonRouter
 } from "@ionic/vue";
 
 const IonRouter = useIonRouter();
@@ -29,6 +29,11 @@ const props = defineProps({
     <ion-header >
         <ion-toolbar color="primary">
             <ion-buttons slot="start">
+                <!-- 
+                    If we can go back, the back button will be shown.
+                    But if we can't go back, the menu button will be shown.
+                    We don't want to show both at the same time because it looks too crowded.
+                -->
                 <ion-menu-button v-if="!IonRouter.canGoBack()"></ion-menu-button>
                 <ion-back-button></ion-back-button>
             </ion-buttons>
@@ -38,10 +43,12 @@ const props = defineProps({
             </ion-buttons>
         </ion-toolbar>
     </ion-header>
-
-    
-        
-        <slot></slot>
+    <!-- 
+        For the navbar to work, it needs to be placed inside the ion-page. 
+        But our content also needs to be inside the ion-page.
+        We use slot to place the content inside the ion-page.
+    -->
+    <slot></slot>
         
     
 </ion-page>
